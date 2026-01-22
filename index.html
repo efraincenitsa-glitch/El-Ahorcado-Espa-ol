@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎮 Ahorcado Español Latino</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<main class="container">
+  <h1>🎮 Juego del Ahorcado</h1>
+  <p class="subtitle">Español Latino</p>
+
+  <div id="hangman"></div>
+  <div id="word"></div>
+
+  <div class="controls">
+    <input type="text" id="guess" maxlength="1" placeholder="A-Z" autocomplete="off">
+    <button onclick="checkLetter()">Probar</button>
+    <button class="btn-new" onclick="newGame()">Juego nuevo</button>
+  </div>
+
+  <div id="letters"></div>
+  <div id="attempts"></div>
+  <div id="message"></div>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
