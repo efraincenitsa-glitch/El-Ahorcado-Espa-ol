@@ -43,7 +43,7 @@ O    |
  O   |
 /|\\ |
 / \\ |
-      |
+      ||
 =====`];
 
 let word, display, attempts, used;
