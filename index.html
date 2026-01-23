@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎮 Ahorcado Español Latino</title>
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#667eea,#764ba2);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:0;
+}
+.container{
+  background:#fff;
+  padding:25px;
+  border-radius:15px;
+  max-width:400px;
+  width:100%;
+  text-align:center;
+  box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+h1{ margin-bottom:5px; }
+.subtitle{ color:#666; margin-bottom:20px; }
+#hangman{
+  font-family:monospace;
+  white-space:pre-line;
+  border:1px solid #333;
+  padding:12px;
+  border-radius:10px;
+  background:#fafafa;
+  margin-bottom:15px;
+}
+#word{
+  font-size:32px;
+  letter-spacing:8px;
+  margin:20px 0;
+}
+.controls{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:center;
+}
+input{
+  font-size:22px;
+  padding:10px;
+  width:70px;
+  text-align:center;
+  text-transform:uppercase;
+  border-radius:8px;
+  border:1px solid #555;
+}
+button{
+  padding:10px 18px;
+  border:none;
+  border-radius:8px;
+  background:#333;
+  color:#fff;
+  cursor:pointer;
+}
+button:hover{ opacity:.9; }
+.btn-new{ background:#0066cc; }
+#letters,#attempts,#message,#score,#record{
+  margin-top:12px;
+  font-size:18px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🎮 Juego del Ahorcado</h1>
+  <div class="subtitle">Español Latino</div>
+  <div id="hangman"></div>
+  <div id="word"></div>
+
+  <div class="controls">
+    <input id="guess" type="text" maxlength="1" placeholder="A-Z">
+    <button onclick="checkLetter()">Probar</button>
+    <button class="btn-new" onclick="resetGame()">Reiniciar</button>
+  </div>
+
+  <div id="letters"></div>
+  <div id="attempts"></div>
+  <div id="score"></div>
+  <div id="record"></div>
+  <div id="message"></div>
+</div>
+
+<audio id="winSound" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
+<audio id="loseSound" src="https://assets.mixkit.co/active_storage/sfx/2020/2020-preview.mp3"></audio>
+
+<script>
+const words=["AMIGO","FAMILIA","PERRO","GATO","CARRO","CAMISA","ZAPATO","MESA","SILLA","COMPUTADORA","VENTANA","PUERTA","PLAYA","QUESO","FUTBOL","AVENTURA","MISTERIO","TESORO","ALIADO","ENEMIGO","MISION","PODER","DESTINO"];
+const stages=[`
+=====` ,`
+    |
+    |
+    |
+    |
+    |
+=====` ,`+---+
+    |
+    |
+    |
+    |
+    |
+=====` ,`+---+
+|   |
+O   |
+    |
+    |
+    |
+=====` ,`+---+
+|   |
+O   |
+|   |
+    |
+    |
+=====` ,`+---+
+|   |
+O   |
+/|\\ |
+    |
+    |
+=====` ,`+---+
+|   |
+O   |
+/|\\ |
+/ \\ |
+    |
+=====` ];
+let word,display,attempts,used;
+let score=0;
+let record=localStorage.getItem("record")||0;
+const winSound=document.getElementById("winSound");
+const loseSound=document.getElementById("loseSound");
+let shuffledWords=JSON.parse(localStorage.getItem("shuffledWords"));
+let wordIndex=localStorage.getItem("wordIndex");
+if(!shuffledWords||wordIndex===null){
+  shuffledWords=[...words].sort(()=>Math.random()-0.5);
+  wordIndex=0;
+  saveWords();
+}
+function saveWords(){
+  localStorage.setItem("shuffledWords",JSON.stringify(shuffledWords));
+  localStorage.setItem("wordIndex",wordIndex);
+}
+function newGame(){
+  if(wordIndex>=shuffledWords.length){
+    shuffledWords=[...words].sort(()=>Math.random()-0.5);
+    wordIndex=0;
+  }
+  word=shuffledWords[wordIndex++];
+  saveWords();
+  display=Array(word.length).fill("_");
+  attempts=6;
+  used=[];
+  document.getElementById("guess").disabled=false;
+  document.getElementById("guess").value="";
+  document.getElementById("message").innerText="";
+  updateScreen();
+}
+function resetGame(){score=0;newGame();}
+function updateScreen(){
+  document.getElementById("word").innerText=display.join(" ");
+  document.getElementById("letters").innerText="Letras usadas: "+used.join(", ");
+  document.getElementById("attempts").innerText="Intentos restantes: "+attempts;
+  document.getElementById("hangman").innerText=stages[6-attempts];
+  document.getElementById("score").innerText="✅ Palabras acertadas: "+score;
+  document.getElementById("record").innerText="🏆 Récord: "+record;
+}
+function checkLetter(){
+  const input=document.getElementById("guess");
+  const letter=input.value.toUpperCase();
+  input.value="";
+  if(!letter.match(/^[A-ZÑ]$/))return alert("Ingresa una letra válida");
+  if(used.includes(letter))return alert("Esa letra ya fue usada");
+  used.push(letter);
+  if(word.includes(letter)){
+    [...word].forEach((c,i)=>{if(c===letter)display[i]=letter;});
+  }else attempts--;
+  updateScreen();
+  checkStatus();
+}
+function checkStatus(){
+  if(!display.includes("_")){
+    winSound.currentTime=0;winSound.play();
+    score++;
+    if(score>record){record=score;localStorage.setItem("record",record);}
+    document.getElementById("message").innerText="🎉 ¡Correcto! Nueva palabra...";
+    setTimeout(newGame,1200);
+  }else if(attempts===0){
+    loseSound.currentTime=0;loseSound.play();
+    document.getElementById("message").innerText="❌ Perdiste. La palabra era: "+word;
+    document.getElementById("guess").disabled=true;
+    score=0;
+    updateScreen();
+  }
+}
+document.getElementById("guess").addEventListener("keyup",e=>{if(e.key==="Enter")checkLetter();});
+newGame();
+</script>
+</body>
+</html>
