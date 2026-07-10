@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#08111f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Ahorcado PRO">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Ahorcado Latino PRO</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/icon.svg">
+  <link rel="apple-touch-icon" href="assets/icons/icon-1024.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <div class="brand">
+        <img src="assets/icons/icon.svg" alt="Icono Ahorcado Latino PRO" class="brand-icon">
+        <div>
+          <p class="eyebrow">Juego clásico mejorado</p>
+          <h1>Ahorcado Latino PRO</h1>
+          <p class="subtitle">Dificultades, categorías, pistas, récord, mejor tiempo y ranking local.</p>
+        </div>
+      </div>
+      <button id="themeBtn" class="icon-btn" type="button" title="Cambiar tema">🌙</button>
+    </header>
+
+    <main class="layout">
+      <section class="panel game-panel">
+        <div class="status-bar">
+          <span id="gameState" class="pill">Listo para jugar</span>
+          <span id="timer" class="timer">00:00</span>
+        </div>
+
+        <div class="hangman-card" aria-live="polite">
+          <pre id="hangman" class="hangman">+---+
+|   |
+    |
+    |
+    |
+    |
+=====</pre>
+        </div>
+
+        <div id="word" class="word" aria-label="Palabra oculta"></div>
+        <div id="hintBox" class="hint-box">💡 La pista aparecerá aquí cuando la solicites.</div>
+
+        <div class="input-row">
+          <input id="guess" maxlength="1" autocomplete="off" inputmode="text" placeholder="A-Z" aria-label="Letra">
+          <button id="checkBtn" class="btn primary" type="button">Probar</button>
+          <button id="hintBtn" class="btn secondary" type="button">Pista</button>
+          <button id="newBtn" class="btn ghost" type="button">Nueva</button>
+        </div>
+
+        <div id="keyboard" class="keyboard" aria-label="Teclado de letras"></div>
+        <div id="message" class="message" role="status"></div>
+      </section>
+
+      <aside class="panel side-panel">
+        <h2>Configuración</h2>
+        <label class="field">
+          Dificultad
+          <select id="difficulty">
+            <option value="easy">Fácil - 8 intentos, palabras cortas</option>
+            <option value="normal" selected>Normal - 6 intentos</option>
+            <option value="hard">Difícil - 5 intentos, palabras largas</option>
+            <option value="expert">Experto - 4 intentos, sin pista gratis</option>
+          </select>
+        </label>
+        <label class="field">
+          Categoría
+          <select id="category">
+            <option value="all">Todas</option>
+            <option value="finanzas">Finanzas</option>
+            <option value="tecnologia">Tecnología</option>
+            <option value="valores">Valores</option>
+            <option value="lugares">Lugares y transporte</option>
+            <option value="empresa">Empresa y logística</option>
+            <option value="comida">Comida y hogar</option>
+          </select>
+        </label>
+        <label class="switch"><input id="soundToggle" type="checkbox" checked> Sonidos</label>
+        <label class="switch"><input id="autoNextToggle" type="checkbox" checked> Siguiente palabra automática</label>
+
+        <div class="stats-grid">
+          <article><span id="score">0</span><small>Racha actual</small></article>
+          <article><span id="record">0</span><small>Récord</small></article>
+          <article><span id="bestTime">--</span><small>Mejor tiempo</small></article>
+          <article><span id="wins">0</span><small>Ganadas</small></article>
+          <article><span id="losses">0</span><small>Perdidas</small></article>
+          <article><span id="accuracy">0%</span><small>Precisión</small></article>
+        </div>
+
+        <div class="progress-wrap">
+          <div class="progress-label"><span>Intentos restantes</span><strong id="attemptsText">6</strong></div>
+          <div class="progress"><div id="attemptsBar"></div></div>
+        </div>
+
+        <h2>Ranking local</h2>
+        <ol id="ranking" class="ranking"></ol>
+        <button id="resetStatsBtn" class="btn danger" type="button">Borrar estadísticas</button>
+      </aside>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
