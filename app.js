@@ -4,49 +4,63 @@ const WORD_BANK=[
 const DIFFICULTIES={easy:{label:"Fácil",attempts:8,min:4,max:8,hintPenalty:0,score:10},normal:{label:"Normal",attempts:6,min:6,max:12,hintPenalty:1,score:18},hard:{label:"Difícil",attempts:5,min:8,max:16,hintPenalty:2,score:28},expert:{label:"Experto",attempts:4,min:10,max:99,hintPenalty:3,score:42}};
 const $=id=>document.getElementById(id);
 const letters="ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split("");
-const stages=[`+---+
-|   |
-    |
-    |
-    |
-    |
-=====`,`+---+
-|   |
-O   |
-    |
-    |
-    |
-=====`,`+---+
-|   |
-O   |
-|   |
-    |
-    |
-=====`,`+---+
-|   |
-O   |
-/|  |
-    |
-    |
-=====`,`+---+
-|   |
-O   |
-/|\ |
-    |
-    |
-=====`,`+---+
-|   |
-O   |
-/|\ |
-/   |
-    |
-=====`,`+---+
-|   |
-O   |
-/|\ |
-/ \ |
-    |
-=====`];
+const stages = [
+`  +----+
+  |    |
+       |
+       |
+       |
+       |
+=========`,
+
+`  +----+
+  |    |
+  O    |
+       |
+       |
+       |
+=========`,
+
+`  +----+
+  |    |
+  O    |
+  |    |
+       |
+       |
+=========`,
+
+`  +----+
+  |    |
+  O    |
+ /|    |
+       |
+       |
+=========`,
+
+`  +----+
+  |    |
+  O    |
+ /|\\   |
+       |
+       |
+=========`,
+
+`  +----+
+  |    |
+  O    |
+ /|\\   |
+ /     |
+       |
+=========`,
+
+`  +----+
+  |    |
+  O    |
+ /|\\   |
+ / \\   |
+       |
+=========`];
+
 let state={word:"",cat:"",hint:"",display:[],used:[],attempts:6,maxAttempts:6,score:0,start:0,timer:null,roundOver:false,totalGuesses:0,correctGuesses:0};
 let stats=JSON.parse(localStorage.getItem("ahorcadoProStats")||'{"record":0,"bestTime":null,"wins":0,"losses":0,"ranking":[]}');
 function saveStats(){localStorage.setItem("ahorcadoProStats",JSON.stringify(stats));}
