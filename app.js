@@ -264,6 +264,7 @@ function render(){
 }
 
 function renderHangmanSvg(stage){
+
   const hangman = $("hangman");
 
   if(!hangman){
@@ -271,36 +272,24 @@ function renderHangmanSvg(stage){
   }
 
   hangman.innerHTML = `
-    <svg
-      viewBox="0 0 240 260"
-      width="100%"
-      height="260"
-      role="img"
-      aria-label="Dibujo del ahorcado"
-      class="hangman-svg"
-    >
-      <g
-        fill="none"
-        stroke="currentColor"
-        stroke-width="8"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <line x1="35" y1="235" x2="205" y2="235"></line>
-        <line x1="65" y1="235" x2="65" y2="35"></line>
-        <line x1="65" y1="35" x2="160" y2="35"></line>
-        <line x1="160" y1="35" x2="160" y2="65"></line>
-
-        ${stage >= 1 ? '<circle cx="160" cy="90" r="24"></circle>' : ""}
-        ${stage >= 2 ? '<line x1="160" y1="115" x2="160" y2="165"></line>' : ""}
-        ${stage >= 3 ? '<line x1="160" y1="130" x2="128" y2="150"></line>' : ""}
-        ${stage >= 4 ? '<line x1="160" y1="130" x2="192" y2="150"></line>' : ""}
-        ${stage >= 5 ? '<line x1="160" y1="165" x2="135" y2="205"></line>' : ""}
-        ${stage >= 6 ? '<line x1="160" y1="165" x2="185" y2="205"></line>' : ""}
-      </g>
-    </svg>
+    <div style="
+      width:220px;
+      height:220px;
+      background:red;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      border-radius:20px;
+      font-size:30px;
+      font-weight:bold;
+      margin:auto;
+    ">
+      ETAPA ${stage}
+    </div>
   `;
 }
+
 
 function renderWord(){
   $("word").innerHTML = state.display
