@@ -468,7 +468,7 @@ body.light .hangman{
 
   .app-shell{
 
-    padding-top:120px;
+    padding-top:20px;
 
     padding-left:16px;
     padding-right:16px;
@@ -476,7 +476,11 @@ body.light .hangman{
   }
 
   .hero{
-    display:none;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    margin-bottom:20px;
   }
 
   .brand{
