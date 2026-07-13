@@ -45,7 +45,15 @@ select{
 .app-shell{
   width:min(1180px,100%);
   margin:0 auto;
-  padding:24px;
+
+  padding-top:max(
+    24px,
+    calc(env(safe-area-inset-top) + 24px)
+  );
+
+  padding-left:24px;
+  padding-right:24px;
+  padding-bottom:24px;
 }
 
 /* ===================================== */
@@ -56,14 +64,10 @@ select{
   display:flex;
   justify-content:space-between;
   gap:18px;
-  align-items:flex-start;
-  margin-bottom:22px;
+  align-items:center;
+  margin-bottom:10px;
 
-  padding:
-    calc(env(safe-area-inset-top) + 10px)
-    18px
-    14px
-    18px;
+  padding:0;
 }
 
 .brand{
@@ -135,6 +139,7 @@ select{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  margin-top:0;
   margin-bottom:14px;
 }
 
@@ -428,7 +433,12 @@ body.light .hangman{
 @media(max-width:880px){
 
   .app-shell{
-    padding:14px;
+
+    padding-top:70px;
+
+    padding-left:14px;
+    padding-right:14px;
+    padding-bottom:14px;
   }
 
   .layout{
@@ -455,9 +465,17 @@ body.light .hangman{
 
 @media(max-width:768px){
 
+  .app-shell{
+
+    padding-top:120px;
+
+    padding-left:16px;
+    padding-right:16px;
+    padding-bottom:16px;
+  }
+
   .hero{
-    padding-top:
-      calc(env(safe-area-inset-top) + 8px);
+    display:none;
   }
 
   .brand{
@@ -501,4 +519,15 @@ body.light .hangman{
   .stats-grid{
     grid-template-columns:1fr 1fr;
   }
+}
+
+@supports(padding:max(0px)){
+
+  .app-shell{
+    padding-top:max(
+      90px,
+      calc(env(safe-area-inset-top) + 50px)
+    );
+  }
+
 }
