@@ -116,11 +116,17 @@ function saveStats(){
 }
 
 function playSound(type){
-  if(!$("soundToggle").checked) return;
+  const soundToggle = $("soundToggle");
+
+  if(soundToggle && !soundToggle.checked){
+    return;
+  }
 
   const AudioContextClass = window.AudioContext || window.webkitAudioContext;
 
-  if(!AudioContextClass) return;
+  if(!AudioContextClass){
+    return;
+  }
 
   const ctx = new AudioContextClass();
   const oscillator = ctx.createOscillator();
@@ -157,7 +163,7 @@ function formatSeconds(sec){
 }
 
 function normalize(str){
-  return str
+  return String(str)
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toUpperCase();
@@ -188,6 +194,7 @@ function startTimer(){
   clearInterval(state.timer);
 
   state.start = Date.now();
+
   $("timer").textContent = "00:00";
 
   state.timer = setInterval(() => {
@@ -216,6 +223,7 @@ function newGame(keepScore = true){
   }
 
   $("guess").disabled = false;
+  $("guess").value = "";
   $("message").textContent = "";
   $("hintBox").textContent = "💡 La pista aparecerá aquí cuando la solicites.";
   $("gameState").textContent = `${diff.label} · ${labelCategory(state.cat)}`;
@@ -258,6 +266,10 @@ function render(){
 function renderHangmanSvg(stage){
   const hangman = $("hangman");
 
+  if(!hangman){
+    return;
+  }
+
   hangman.innerHTML = `
     <svg
       viewBox="0 0 240 260"
@@ -265,7 +277,7 @@ function renderHangmanSvg(stage){
       height="260"
       role="img"
       aria-label="Dibujo del ahorcado"
-      style="display:block;max-width:260px;margin:0 auto;"
+      class="hangman-svg"
     >
       <g
         fill="none"
@@ -281,8 +293,8 @@ function renderHangmanSvg(stage){
 
         ${stage >= 1 ? '<circle cx="160" cy="90" r="24"></circle>' : ""}
         ${stage >= 2 ? '<line x1="160" y1="115" x2="160" y2="165"></line>' : ""}
-        ${stage >= 3 ? '<line x1="160" y1="130" x2="130" y2="150"></line>' : ""}
-        ${stage >= 4 ? '<line x1="160" y1="130" x2="190" y2="150"></line>' : ""}
+        ${stage >= 3 ? '<line x1="160" y1="130" x2="128" y2="150"></line>' : ""}
+        ${stage >= 4 ? '<line x1="160" y1="130" x2="192" y2="150"></line>' : ""}
         ${stage >= 5 ? '<line x1="160" y1="165" x2="135" y2="205"></line>' : ""}
         ${stage >= 6 ? '<line x1="160" y1="165" x2="185" y2="205"></line>' : ""}
       </g>
@@ -337,7 +349,9 @@ function renderStats(){
 }
 
 function checkLetter(letterFromButton){
-  if(state.roundOver) return;
+  if(state.roundOver){
+    return;
+  }
 
   const input = $("guess");
   const letter = normalize(letterFromButton || input.value.trim());
@@ -388,6 +402,7 @@ function finishRound(win){
   state.roundOver = true;
 
   clearInterval(state.timer);
+
   $("guess").disabled = true;
 
   const seconds = Math.max(
@@ -430,7 +445,9 @@ function finishRound(win){
       true
     );
 
-    if($("autoNextToggle").checked){
+    const autoNextToggle = $("autoNextToggle");
+
+    if(autoNextToggle && autoNextToggle.checked){
       setTimeout(() => newGame(true), 1400);
     }
   }else{
@@ -450,7 +467,9 @@ function finishRound(win){
 }
 
 function showHint(){
-  if(state.roundOver) return;
+  if(state.roundOver){
+    return;
+  }
 
   const diff = DIFFICULTIES[$("difficulty").value];
 
